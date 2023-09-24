@@ -1,9 +1,10 @@
 #include <iostream>
-using namespace std;
-int main() {
+
+int main() 
+{
     int v = 0;
-    int v = 0;
-    int v = 0;
+    int t = 0;
+    int s = 0;
     cin >> v;
     cin >> t;
     s = v * t;
