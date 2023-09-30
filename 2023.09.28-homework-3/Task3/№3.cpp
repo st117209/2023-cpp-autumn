@@ -4,15 +4,14 @@ int main(int argc, char* argv[])
 {
 	int x = 0;
 	std::cin >> x;
-
-	int DEL = 0;
+	int del = 0;
 	for (int i = 1; i <= x; ++i)
 	{
 		if (x % i == 0)
 		{
-			++DEL;
+			++del;
 		}
 	}
-	std::cout << DEL;
+	std::cout << del << std::endl;
 	return 0;
 }

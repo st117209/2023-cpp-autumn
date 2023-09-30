@@ -4,20 +4,13 @@ int main(int argc, char* argv[])
 {
 	int t = 0;
 	std::cin >> t;
-
-	int num = 1;
-	int cnt = 1;
+	int n = t;
 	for (int i = 0; i < t; ++i)
 	{
-		for (int j = 0; j <= cnt; ++j)
+		for (int j = 1; j <= i && n > 0; j++)
 		{
-			std::cout << num << " ";
-		}
-		cnt++;
-		if (cnt > num)
-		{
-			cnt = 1;
-			num++;
+			std::cout << i << " " << std::endl;
+			n -= 1;
 		}
 	}
 

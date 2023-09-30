@@ -2,21 +2,22 @@
 
 int main(int argc, char* argv[])
 {
-	int x = 0;
-	std::cin >> x;
-
-	int polindrom = 0;
-	for (int i = 1; i <= x; ++i)
+	int k = 0;
+	int cnt = 0;
+	std::cin >> k;
+	for (int i = 1; i <= k; ++i)
 	{
-		if (i == obr(i)) {
-			polindrom++;
+		int polindrom = 0;
+		for (int j = i; j > 0; j = j / 10)
+		{
+			polindrom = j % 10 + polindrom * 10;
+		}
+		if (polindrom == i)
+		{
+			cnt += 1;
 		}
 	}
+	std::cout << cnt << std::endl;
 
 	return 0;
-}
-int obr(int n) {
-	for (n > 0) {
-		
-	}
 }
