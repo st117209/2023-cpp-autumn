@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
     {
         count = n / 5;
         st = n % 5;
-        if (a5 * count + st * a1 < a10) 
+        if ((a5 * count + st * a1) < a10)
         {
             b5 += 1;
             b1 += st;
@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
         c10 = n / 10;
         c5 = (n - c10 * 10) / 5;
         c1 = n % 5;
-        if (a10 * c10 + a5 * c5 + a1 * c1 < a20) 
+        if ((a10 * c10 + a5 * c5 + a1 * c1) < a20)
         {
             b10 = c10;
             b5 = c5;
@@ -73,13 +73,13 @@ int main(int argc, char* argv[])
         c10 = (n - c20 * 20) / 10;
         c5 = (n - c20 * 20 - c10 * 10) / 5;
         c1 = n % 5;
-        if (c20 * a20 + c10 * a10 + c5 * a5 + c1 * a1 < a60) 
+        if ((c20 * a20 + c10 * a10 + c5 * a5 + c1 * a1) < a60)
         {
             b20 = c20;
-            if (a10 * c10 + a5 * c5 + a1 * c1 < a20) 
+            if ((a10 * c10 + a5 * c5 + a1 * c1) < a20)
             {
                 b10 = c10;
-                if (a5 * c5 + a1 * c1 < a10) 
+                if ((a5 * c5 + a1 * c1) < a10)
                 {
                     b5 = c5;
                     b1 = c1;

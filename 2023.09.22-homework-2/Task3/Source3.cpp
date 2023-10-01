@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
     if (a == 0 && b == 0) {
         std::cout << "INF" << std::endl;
     }
-    else if ((a == 0) || ((b % a) != 0) || (c * (-b / a) + d == 0)) 
+    else if ((a == 0) || ((b % a) != 0) || ((c * (-b / a) + d) == 0))
     {
         std::cout << "NO" << std::endl;
     }

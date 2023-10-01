@@ -1,6 +1,6 @@
 #include <iostream>
 
-int main() 
+int main(int argc, char* argv[]) 
 {
     int k = 0;
     int m = 0;
