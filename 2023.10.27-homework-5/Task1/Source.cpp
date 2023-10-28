@@ -20,18 +20,18 @@ int main(int argc, char* argv[])
 		{
 			switch (choice)
 			{
-			case 0: // True
+			case 0: 
 			{
 				exit = true;
 				break;
 			}
-			case 1: // True
+			case 1: 
 			{
 				printArray(a, len);
 				system("pause");
 				break;
 			}
-			case 2: // True
+			case 2: 
 			{
 				int element = 0;
 				std::cout << "Input element to add : ";
@@ -47,17 +47,17 @@ int main(int argc, char* argv[])
 				std::cout << "Deleted  " << deleteElement(a, len, index) << std::endl;
 				break;
 			}
-			case 4: // True
+			case 4: 
 			{
 				sortArray_ascending(a, len);
 				break;
 			}
-			case 5: // True
+			case 5: 
 			{
 				printReverseArray(a, len);
 				break;
 			}
-			case 6: // True
+			case 6:
 			{
 				int min = 0;
 				int max = 0;
@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
 				deleteDuplicates(a, len);
 				break;
 			}
-			case 8: // True
+			case 8: 
 			{
 				int n = 0;
 				std::cout << "How many elements to add: ";
