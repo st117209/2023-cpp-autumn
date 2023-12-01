@@ -2,7 +2,7 @@
 
 void hanoi(int n, int from, int to)
 {
-	if (n <= 0)
+	if (n <= 0 or from == to)
 	{
 		return;
 	}
@@ -19,20 +19,18 @@ int main(int argc, char* argv[])
 	std::cin >> n;
 	int from = 1;
 	int to = 0;
-	if (n % 2 == 0)
-	{
-		to = 3;
-	}
-	else
-	{
-		to = 2;
-	}
-	hanoi(n, from, to);
-	int res = 5 - to;
 	for (int i = n; i > 0; i--)
 	{
-		hanoi(i - 1, to, res);
-		std::swap(to, res);
+		if (i % 2 == 0)
+		{
+			to = 3;
+		}
+		else
+		{
+			to = 2;
+		}
+		hanoi(i, from, to);
+		from = to;
 	}
 	return 0;
 }
