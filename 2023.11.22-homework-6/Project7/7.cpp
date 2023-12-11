@@ -35,7 +35,10 @@ void sort()
 		{
 			if (d[1][n[1] - 1] > d[3][n[3] - 1 - i])
 			{
-				cnt = n[3] - i;
+				cnt++;
+			}
+			else
+			{
 				break;
 			}
 		}
@@ -57,14 +60,3 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
-
-/* {
-	for (int i = 1; i <= n[3]; ++i)
-	{
-		if (d[1][n[1] - 1] > d[3][n[3] - i])
-		{
-			cnt++;
-		}
-		else { break; }
-	}
-}*/
