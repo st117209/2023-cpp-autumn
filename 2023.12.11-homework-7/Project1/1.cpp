@@ -47,7 +47,7 @@ void ReadLines(char* filename, char** lines, int maxlen)
 	fclose(file);
 }
 
-void CountSize(char* filename, int& lines, int& maxLine)
+void CountSize(char* filename, int& lines)
 {
 	FILE* file = fopen(filename, "r");
 
@@ -65,12 +65,11 @@ void CountSize(char* filename, int& lines, int& maxLine)
 		{
 			currentLen++;
 		}
-		maxLine = (maxLine > currentLen ? maxLine : currentLen);
 	}
 	lines++;
 	fclose(file);
 }
-
+//
 int countWords(char* text)
 {
 	int cnt = 0;
@@ -90,19 +89,23 @@ void findLongestSentence(char* filename)
 {
 	FILE* f = fopen(filename, "r");
 	char* str = 0;
+
 	int len = 0;
+	CountSize(filename, len);
 	int maxlen = 0;
+
+	char* sent = (char*)malloc(sizeof(char) * len);
+	int i = 0;
 	while (!feof(f))
 	{
-		int i = 0;
-		if (f[i] != "." || char* str() != "!" || char* str() != "?" || )
-		{
-			len++;
-		}
-
-
+		fscanf_s(f, "%c", &sent[i]);
+		i++;
 	}
-	return;
+
+
+	fclose(f);
+
+	return  substr(sent, ind1, ind2);
 }
 
 //функции со строками
@@ -170,7 +173,7 @@ char* substr(char* str, int from, int sublen)
 	return substr;
 }
 
-int strcmp(char* str1, char* str2) 
+int strcmp(char* str1, char* str2)
 {
 	int len1 = strlen(str1);
 	int len2 = strlen(str2);
@@ -201,13 +204,49 @@ int main(int argc, char* argv[])
 {
 	FILE* f = fopen("in.txt", "r");
 	f = fopen("out.txt", "a");
-	//fclose(f);
-
-
+	char str[255];
+	gets_s(str);
+	fclose(f);
 
 	f = fopen("out.txt", "w");
-	fprintf(f, "Количество слов: %d\n", countWords(f));
+	fprintf(f, "Count Words: %d\n", countWords(str));
 	fclose(f);
 
 	return 0;
+}
+
+char* maxsentence(char* filename)
+{
+	FILE* file = fopen(filename, "r");
+	int len = CountSize(filename);
+
+	char* sentences = (char*)malloc(sizeof(char) * len);
+	int i = 0;
+	while (!feof(file))
+	{
+		fscanf_s(file, "%c", &sentences[i]);
+		i++;
+	}
+
+	int ind1 = 0;
+	int ind2 = 0;
+	int len2 = 0;
+	int maxlen = 0;
+	for (int i = 0; i < len; ++i)
+	{
+		len2++;
+		if (sentences[i] == '.'  sentences[i] == '?'  sentences[i] == '!')
+		{
+			if (len2 > maxlen)
+			{
+				maxlen = (maxlen < len2 ? len2 : maxlen);
+				ind1 = ind2 + 1;
+				ind2 = i;
+				len2 = 0; 
+			}
+		} 
+	}
+
+	fclose(file);
+	return Substr(sentences, ind1, maxlen);
 }
