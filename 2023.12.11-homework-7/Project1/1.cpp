@@ -13,17 +13,6 @@
 #include<cstdio>
 #include<cstdlib>
 
-bool isLetter(char c)
-{
-	return (c >= 'а' && c <= 'я') || (c >= 'А' && c <= 'Я') ||
-		(c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
-}
-
-bool isSyntax(char c)
-{
-	return (c == '.' || c == ',' || c == ';' || c == ':' || c == '!' || c == '?');
-}
-
 /*char* strcpy(char* s1, const char* s2)
 {
 	for (int i = 0; i <= sizeof(s2); i++)
@@ -33,41 +22,20 @@ bool isSyntax(char c)
 	return s1;
 }*/
 
-void ReadLines(char* filename, char** lines, int maxlen)
+int CountSize(char* filename)
 {
 	FILE* file = fopen(filename, "r");
 
-	int ind = 0;
-	while (!feof(file))
-	{
-		fgets(lines[ind], maxlen, file);
-		ind++;
-	}
-
-	fclose(file);
-}
-
-void CountSize(char* filename, int& lines)
-{
-	FILE* file = fopen(filename, "r");
-
-	int currentLen = 0;
+	int len = 0;
 	while (!feof(file))
 	{
 		char c = 0;
 		fscanf_s(file, "%c", &c);
-		if (c == '\n')
-		{
-			lines++;
-			currentLen = 0;
-		}
-		else
-		{
-			currentLen++;
-		}
+		len++;
 	}
-	lines++;
+	len++;
 	fclose(file);
+	return len;
 }
 //
 int countWords(char* text)
@@ -85,27 +53,40 @@ int countWords(char* text)
 	return cnt;
 }
 
-void findLongestSentence(char* filename)
+char* findLongestSentence(char* filename)
 {
-	FILE* f = fopen(filename, "r");
-	char* str = 0;
+	FILE* file = fopen(filename, "r");
+	int len = CountSize(filename);
 
-	int len = 0;
-	CountSize(filename, len);
-	int maxlen = 0;
-
-	char* sent = (char*)malloc(sizeof(char) * len);
+	char* sentences = (char*)malloc(sizeof(char) * len);
 	int i = 0;
-	while (!feof(f))
+	while (!feof(file))
 	{
-		fscanf_s(f, "%c", &sent[i]);
-		i++;
+		fscanf_s(file, "%c", &sentences[i]);
+		++i;
+	}
+	sentences[i + 1] = '\0';
+	int ind1 = -1;
+	int ind2 = 0;
+	int len2 = 0;
+	int maxlen = 0;
+	for (int i = 0; i < len; ++i)
+	{
+		len2++;
+		if ((sentences[i] == '.') || (sentences[i] == '?') || (sentences[i] == '!'))
+		{
+			if (len2 > maxlen)
+			{
+				maxlen = len2;
+				ind1 = ind2;
+				ind2 = i;
+			}
+			len2 = 0;
+		}
 	}
 
-
-	fclose(f);
-
-	return  substr(sent, ind1, ind2);
+	fclose(file);
+	return substr(sentences, ind1 + 1, ind2 - ind1 - 1);
 }
 
 //функции со строками
@@ -203,50 +184,18 @@ char* strmult(char* str, int t)
 int main(int argc, char* argv[])
 {
 	FILE* f = fopen("in.txt", "r");
-	f = fopen("out.txt", "a");
 	char str[255];
 	gets_s(str);
 	fclose(f);
 
 	f = fopen("out.txt", "w");
+	char* name = new char[6] {'f', '.', 't', 'x', 't', '\0'};
+
 	fprintf(f, "Count Words: %d\n", countWords(str));
+	fscanf(f, "Count Words: %d\n", countWords(str));
+	printf_s("%s \n", findLongestSentence(name));
+	fscanf(f, "%s\n", countWords(str));
+
 	fclose(f);
-
 	return 0;
-}
-
-char* maxsentence(char* filename)
-{
-	FILE* file = fopen(filename, "r");
-	int len = CountSize(filename);
-
-	char* sentences = (char*)malloc(sizeof(char) * len);
-	int i = 0;
-	while (!feof(file))
-	{
-		fscanf_s(file, "%c", &sentences[i]);
-		i++;
-	}
-
-	int ind1 = 0;
-	int ind2 = 0;
-	int len2 = 0;
-	int maxlen = 0;
-	for (int i = 0; i < len; ++i)
-	{
-		len2++;
-		if (sentences[i] == '.'  sentences[i] == '?'  sentences[i] == '!')
-		{
-			if (len2 > maxlen)
-			{
-				maxlen = (maxlen < len2 ? len2 : maxlen);
-				ind1 = ind2 + 1;
-				ind2 = i;
-				len2 = 0; 
-			}
-		} 
-	}
-
-	fclose(file);
-	return Substr(sentences, ind1, maxlen);
 }
