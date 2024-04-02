@@ -86,7 +86,7 @@ char* findLongestSentence(char* filename)
 	}
 
 	fclose(file);
-	return substr(sentences, ind1 + 1, ind2 - ind1 - 1);
+	return substr(sentences, ind1 + 1, ind2);
 }
 
 //функции со строками
@@ -139,18 +139,18 @@ int strstr(char* str1, char* str2)
 			}
 		}
 	}
-	return;
+	return 0;
 }
 
-char* substr(char* str, int from, int sublen)
+char* substr(char* str, int from, int to)
 {
 	int len = strlen(str);
-	char* substr = (char*)malloc(sizeof(char) * (sublen + 2));
-	for (int i = 0; i < sublen + 1; ++i)
+	char* substr = (char*)malloc(sizeof(char) * (to - from + 2));
+	for (int i = 0; i < to - from + 1; ++i)
 	{
 		substr[i] = str[from + i];
 	}
-	substr[sublen + 1] = '\0';
+	substr[to - from + 1] = '\0';
 	return substr;
 }
 
@@ -193,8 +193,8 @@ int main(int argc, char* argv[])
 
 	fprintf(f, "Count Words: %d\n", countWords(str));
 	fscanf(f, "Count Words: %d\n", countWords(str));
-	printf_s("%s \n", findLongestSentence(name));
-	fscanf(f, "%s\n", countWords(str));
+	fprintf(f, "%s \n", findLongestSentence(name));
+	fscanf(f, "%s\n", findLongestSentence(name));
 
 	fclose(f);
 	return 0;
