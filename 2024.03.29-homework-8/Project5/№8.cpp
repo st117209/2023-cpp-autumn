@@ -354,35 +354,19 @@ void CGraph::degVertex()
 	}
 }
 
-/*void inputAdjencyList(int a[101][101], int& n)
-{
-	cin >> n;
-	for (int i = 1; i <= n; ++i)
-	{
-		int edges = 0;
-		cin >> edges;
-		for (int j = 0; j < edges; ++j)
-		{
-			int end = 0;
-			cin >> end;
-			a[i][end] = 1;
-		}
-	}
-}*/
-
 void CGraph::outputAdjencyList()
 {
-	int a[101][101];
-	std::cout << vertexCount() << std::endl;
-	for (int i = 0; i <= vertexCount(); ++i)
+
+	std::cout << vertexCount() - 1 << std::endl;
+	for (int i = 1; i < vertexCount(); ++i)
 	{
 		int count = 0;
-		for (int j = 1; j <= vertexCount(); ++j)
+		for (int j = 0; j < vertexCount(); ++j)
 		{
 			count += _matrix[i][j];
 		}
 		std::cout << count << " ";
-		for (int j = 1; j <= vertexCount(); ++j)
+		for (int j = 0; j < vertexCount(); ++j)
 		{
 			if (_matrix[i][j] == 1)
 			{

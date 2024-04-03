@@ -34,8 +34,6 @@ public:
 	int vertexCount();
 	int power(int vertex);
 	bool isTour();
-	void printOrigins();
-	void printDrain();
 
 private:
 	///создает матрицу смежности n*n и матрицу с дугами размера m
@@ -68,8 +66,8 @@ int main(int argc, char* argv[])
 	std::cin >> v;
 	CGraph g(v, 0);
 	g.ReadMatrix(v, std::cin);
-	g.printOrigins();
-	g.printDrain();
+	std::cout << g.vertexCount() << " " << g.edgesCount() << std::endl;
+	g.PrintEdges();
 	return EXIT_SUCCESS;
 }
 
@@ -339,50 +337,3 @@ std::ostream& operator<<(std::ostream& stream, const SEdge& edge)
 	return stream;
 }
 
-void CGraph::printOrigins()
-{
-	bool origin[101]{ 0 };
-	int count = 0;
-	for (int i = 0; i < (vertexCount()); ++i)
-	{
-		origin[i] = true;
-		for (int j = 0; j < (vertexCount()); ++j)
-		{
-			origin[i] &= _matrix[j][i] == 0;
-		}
-		count += (int)origin[i];
-	}
-	std::cout << count << " ";
-	for (int i = 0; i < (vertexCount()); ++i)
-	{
-		if (origin[i])
-		{
-			std::cout << i + 1 << " ";
-		}
-	}
-	std::cout << std::endl;
-}
-
-void CGraph::printDrain()
-{
-	bool origin[101]{ 0 };
-	int count = 0;
-	for (int i = 0; i < (vertexCount()); ++i)
-	{
-		origin[i] = true;
-		for (int j = 0; j < (vertexCount()); ++j)
-		{
-			origin[i] &= _matrix[i][j] == 0;
-		}
-		count += (int)origin[i];
-	}
-	std::cout << count << " ";
-	for (int i = 0; i < (vertexCount()); ++i)
-	{
-		if (origin[i])
-		{
-			std::cout << i + 1 << " ";
-		}
-	}
-	std::cout << std::endl;
-}

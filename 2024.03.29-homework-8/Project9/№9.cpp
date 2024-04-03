@@ -33,9 +33,9 @@ public:
 	int roadsCount();
 	int vertexCount();
 	int power(int vertex);
-	bool isTour();
-	void printOrigins();
-	void printDrain();
+	bool isTour(); 
+	void inputAdjencyList();
+	void outputAdjencyList();
 
 private:
 	///создает матрицу смежности n*n и матрицу с дугами размера m
@@ -67,9 +67,9 @@ int main(int argc, char* argv[])
 	int v = 0;
 	std::cin >> v;
 	CGraph g(v, 0);
-	g.ReadMatrix(v, std::cin);
-	g.printOrigins();
-	g.printDrain();
+	g.inputAdjencyList();
+	std::cout << g.vertexCount() << std::endl;
+	g.PrintMatrix();
 	return EXIT_SUCCESS;
 }
 
@@ -339,50 +339,41 @@ std::ostream& operator<<(std::ostream& stream, const SEdge& edge)
 	return stream;
 }
 
-void CGraph::printOrigins()
+void CGraph::outputAdjencyList()
 {
-	bool origin[101]{ 0 };
-	int count = 0;
-	for (int i = 0; i < (vertexCount()); ++i)
+
+	std::cout << vertexCount() - 1 << std::endl;
+	for (int i = 1; i < vertexCount(); ++i)
 	{
-		origin[i] = true;
-		for (int j = 0; j < (vertexCount()); ++j)
+		int count = 0;
+		for (int j = 0; j < vertexCount(); ++j)
 		{
-			origin[i] &= _matrix[j][i] == 0;
+			count += _matrix[i][j];
 		}
-		count += (int)origin[i];
-	}
-	std::cout << count << " ";
-	for (int i = 0; i < (vertexCount()); ++i)
-	{
-		if (origin[i])
+		std::cout << count << " ";
+		for (int j = 0; j < vertexCount(); ++j)
 		{
-			std::cout << i + 1 << " ";
+			if (_matrix[i][j] == 1)
+			{
+				std::cout << j << " ";
+			}
 		}
+		std::cout << std::endl;
 	}
-	std::cout << std::endl;
 }
 
-void CGraph::printDrain()
+void CGraph::inputAdjencyList()
 {
-	bool origin[101]{ 0 };
-	int count = 0;
-	for (int i = 0; i < (vertexCount()); ++i)
+	for (int i = 0; i < vertexCount(); ++i)
 	{
-		origin[i] = true;
-		for (int j = 0; j < (vertexCount()); ++j)
+		int n = 0;
+		std::cin >> n;
+		while (n != 0)
 		{
-			origin[i] &= _matrix[i][j] == 0;
-		}
-		count += (int)origin[i];
-	}
-	std::cout << count << " ";
-	for (int i = 0; i < (vertexCount()); ++i)
-	{
-		if (origin[i])
-		{
-			std::cout << i + 1 << " ";
+			int end = 0;
+			std::cin >> end;
+			_matrix[i][end - 1] = 1;
+			--n;
 		}
 	}
-	std::cout << std::endl;
 }
