@@ -1,4 +1,4 @@
-#include<iostream>
+ï»¿#include<iostream>
 
 struct SEdge {
 	int a;
@@ -21,38 +21,37 @@ public:
 	CGraph();
 	CGraph(int vertexes, int edges);
 	~CGraph();
-	///âûâîäèò ìàòðèöó ñìåæíîñòè ãðàôà
+	///Ð²Ñ‹Ð²Ð¾Ð´Ð¸Ñ‚ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñƒ ÑÐ¼ÐµÐ¶Ð½Ð¾ÑÑ‚Ð¸ Ð³Ñ€Ð°Ñ„Ð°
 	void PrintMatrix();
-	///âûâîäèò äóãè ãðàôà
+	///Ð²Ñ‹Ð²Ð¾Ð´Ð¸Ñ‚ Ð´ÑƒÐ³Ð¸ Ð³Ñ€Ð°Ñ„Ð°
 	void PrintEdges();
-	///ñ÷èòûâàåò ìàòðèöó ñìåæíîñòè ãðàôà
+	///ÑÑ‡Ð¸Ñ‚Ñ‹Ð²Ð°ÐµÑ‚ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñƒ ÑÐ¼ÐµÐ¶Ð½Ð¾ÑÑ‚Ð¸ Ð³Ñ€Ð°Ñ„Ð°
 	void ReadMatrix(int vertexes, std::istream& stream);
-	///ñ÷èòûâàåò äóãè ãðàôà
+	///ÑÑ‡Ð¸Ñ‚Ñ‹Ð²Ð°ÐµÑ‚ Ð´ÑƒÐ³Ð¸ Ð³Ñ€Ð°Ñ„Ð°
 	void ReadEdges(int edges, std::istream& stream, bool haveweight = false);
 	int edgesCount();
 	int roadsCount();
 	int vertexCount();
 	int power(int vertex);
 	bool isTour();
-
-	void degVertex();
+	void Mockery();
 
 private:
-	///ñîçäàåò ìàòðèöó ñìåæíîñòè n*n è ìàòðèöó ñ äóãàìè ðàçìåðà m
+	///ÑÐ¾Ð·Ð´Ð°ÐµÑ‚ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñƒ ÑÐ¼ÐµÐ¶Ð½Ð¾ÑÑ‚Ð¸ n*n Ð¸ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñƒ Ñ Ð´ÑƒÐ³Ð°Ð¼Ð¸ Ñ€Ð°Ð·Ð¼ÐµÑ€Ð° m
 	void init();
-	///ñîçäàåò ìàòðèöó ñìåæíîñòè _vertexes*_vertexes
+	///ÑÐ¾Ð·Ð´Ð°ÐµÑ‚ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñƒ ÑÐ¼ÐµÐ¶Ð½Ð¾ÑÑ‚Ð¸ _vertexes*_vertexes
 	void initMatrix();
-	///ñîçäàåò ìàòðèöó ìàòðèöó ñ äóãàìè ðàçìåðà _edges
+	///ÑÐ¾Ð·Ð´Ð°ÐµÑ‚ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñƒ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñƒ Ñ Ð´ÑƒÐ³Ð°Ð¼Ð¸ Ñ€Ð°Ð·Ð¼ÐµÑ€Ð° _edges
 	void initEdges();
 	void initMatrixFromEdges();
 	void initEdgesFromMatrix();
 	int getVertexesCountFromEdges();
 	int getEdgesCountFromMatrix();
-	///óäàëÿåò ìàòðèöó ñìåæíîñòè è ìàòðèöó ñ äóãàìè
+	///ÑƒÐ´Ð°Ð»ÑÐµÑ‚ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñƒ ÑÐ¼ÐµÐ¶Ð½Ð¾ÑÑ‚Ð¸ Ð¸ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñƒ Ñ Ð´ÑƒÐ³Ð°Ð¼Ð¸
 	void dispose();
-	///óäàëÿåò ìàòðèöó ñìåæíîñòè
+	///ÑƒÐ´Ð°Ð»ÑÐµÑ‚ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñƒ ÑÐ¼ÐµÐ¶Ð½Ð¾ÑÑ‚Ð¸
 	void disposeMatrix();
-	///óäàëÿåò ìàòðèöó ñ äóãàìè
+	///ÑƒÐ´Ð°Ð»ÑÐµÑ‚ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñƒ Ñ Ð´ÑƒÐ³Ð°Ð¼Ð¸
 	void disposeEdges();
 
 	int _vertexes;
@@ -68,16 +67,16 @@ int main(int argc, char* argv[])
 	std::cin >> v;
 	CGraph g(v, 0);
 	g.ReadMatrix(v, std::cin);
-	g.degVertex();
+	g.Mockery();
 	return EXIT_SUCCESS;
 }
 
 
 CGraph::CGraph()
-	: _vertexes(0), _edges(0), _matrix(nullptr), _edge(nullptr), _color(nullptr) {}
+	: _vertexes(0), _edges(0), _matrix(nullptr), _edge(nullptr) {}
 
 CGraph::CGraph(int vertexes, int edges)
-	: _vertexes(vertexes), _edges(edges), _matrix(nullptr), _color(nullptr), _edge(nullptr)
+	: _vertexes(vertexes), _edges(edges), _matrix(nullptr), _edge(nullptr)
 {
 	init();
 }
@@ -98,9 +97,9 @@ void CGraph::PrintMatrix()
 		}
 		initMatrixFromEdges();
 	}
-	for (int i = 1; i < _vertexes; ++i)
+	for (int i = 0; i < _vertexes; ++i)
 	{
-		for (int j = 1; j < _vertexes; ++j)
+		for (int j = 0; j < _vertexes; ++j)
 		{
 			std::cout << _matrix[i][j] << " ";
 		}
@@ -338,3 +337,21 @@ std::ostream& operator<<(std::ostream& stream, const SEdge& edge)
 	return stream;
 }
 
+void CGraph::Mockery()
+{
+	int max = 3001;
+	for (int i = 0; i < vertexCount(); i++)
+	{
+		for (int j = i + 1; j < vertexCount(); j++)
+		{
+			for (int k = j + 1; k < vertexCount(); k++)
+			{
+				if (max > _matrix[i][j] + _matrix[j][k] + _matrix[i][k])
+				{
+					max = _matrix[i][j] + _matrix[j][k] + _matrix[i][k];
+				}
+			}
+		}
+	}
+	std::cout << max;
+}

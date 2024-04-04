@@ -35,8 +35,9 @@ public:
 	int power(int vertex);
 	bool isTour();
 	void printOrigins();
-	void printDrain();
-
+	void printDrain(); 
+	void powers();
+	bool RegularGraph();
 
 private:
 	///создает матрицу смежности n*n и матрицу с дугами размера m
@@ -60,6 +61,7 @@ private:
 	int _edges;
 	int** _matrix;
 	int* _color;
+	int* _powers;
 	SEdge* _edge;
 };
 
@@ -67,18 +69,18 @@ int main(int argc, char* argv[])
 {
 	int v = 0;
 	std::cin >> v;
-	CGraph g(v, 0);
+	CGraph g(v, v);
 	g.ReadMatrix(v, std::cin);
-
+	std::cout << (g.RegularGraph() ? "YES" : "NO") << std::endl;
 	return EXIT_SUCCESS;
 }
 
 
 CGraph::CGraph()
-	: _vertexes(0), _edges(0), _matrix(nullptr), _edge(nullptr), _color(nullptr) {}
+	: _vertexes(0), _edges(0), _matrix(nullptr), _edge(nullptr), _powers(nullptr) {}
 
 CGraph::CGraph(int vertexes, int edges)
-	: _vertexes(vertexes), _edges(edges), _matrix(nullptr), _color(nullptr), _edge(nullptr)
+	: _vertexes(vertexes), _edges(edges), _matrix(nullptr), _edge(nullptr), _powers(nullptr)
 {
 	init();
 }
@@ -99,9 +101,9 @@ void CGraph::PrintMatrix()
 		}
 		initMatrixFromEdges();
 	}
-	for (int i = 1; i < _vertexes; ++i)
+	for (int i = 0; i < _vertexes; ++i)
 	{
-		for (int j = 1; j < _vertexes; ++j)
+		for (int j = 0; j < _vertexes; ++j)
 		{
 			std::cout << _matrix[i][j] << " ";
 		}
@@ -190,10 +192,10 @@ int CGraph::power(int vertex)
 
 bool CGraph::isTour()
 {
-	for (int i = 0; i < vertexCount(); ++i)
+	for (int i = 1; i < (vertexCount() - 1); ++i)
 	{
-		int c = 0;
-		for (int j = 0; j < vertexCount(); ++j)
+		int c = 1;
+		for (int j = 1; j < (vertexCount() - 1); ++j)
 		{
 			if (_matrix[i][j] + _matrix[j][i] == 2)
 			{
@@ -212,7 +214,7 @@ bool CGraph::isTour()
 			*/
 			c += (_matrix[i][j] | _matrix[j][i]);
 		}
-		if (c != vertexCount() - 1)
+		if (c != vertexCount() - 2)
 		{
 			return false;
 		}
@@ -339,51 +341,29 @@ std::ostream& operator<<(std::ostream& stream, const SEdge& edge)
 	return stream;
 }
 
-void CGraph::printOrigins()
+void CGraph::powers()
 {
-	bool origin[101]{ 0 };
-	int count = 0;
-	for (int i = 0; i < (vertexCount()); ++i)
+	_powers = new int[_vertexes * _vertexes] {0};
+	for (int i = 0; i < _vertexes; ++i)
 	{
-		origin[i] = true;
-		for (int j = 0; j < (vertexCount()); ++j)
+		for (int j = 0; j < _vertexes; ++j)
 		{
-			origin[i] &= _matrix[j][i] == 0;
-		}
-		count += (int)origin[i];
-	}
-	std::cout << count << " ";
-	for (int i = 0; i < (vertexCount()); ++i)
-	{
-		if (origin[i])
-		{
-			std::cout << i + 1 << " ";
+			_powers[i] += _matrix[i][j];
 		}
 	}
-	std::cout << std::endl;
 }
 
-void CGraph::printDrain()
+bool CGraph::RegularGraph()
 {
-	bool origin[101]{ 0 };
-	int count = 0;
-	for (int i = 0; i < (vertexCount()); ++i)
+	powers();
+	for (int i = 0; i < vertexCount(); ++i)
 	{
-		origin[i] = true;
-		for (int j = 0; j < (vertexCount()); ++j)
+		if (_powers[i] != _powers[0])
 		{
-			origin[i] &= _matrix[i][j] == 0;
-		}
-		count += (int)origin[i];
-	}
-	std::cout << count << " ";
-	for (int i = 0; i < (vertexCount()); ++i)
-	{
-		if (origin[i])
-		{
-			std::cout << i + 1 << " ";
+			return false;
 		}
 	}
-	std::cout << std::endl;
+	delete[] _powers;
+	_powers = nullptr;
+	return true;
 }
-

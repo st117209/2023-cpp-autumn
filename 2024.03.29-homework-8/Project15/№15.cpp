@@ -34,7 +34,6 @@ public:
 	int vertexCount();
 	int power(int vertex);
 	bool isTour();
-	void degVertex();
 
 private:
 	///создает матрицу смежности n*n и матрицу с дугами размера m
@@ -57,7 +56,6 @@ private:
 	int _vertexes;
 	int _edges;
 	int** _matrix;
-	int* _color;
 	SEdge* _edge;
 };
 

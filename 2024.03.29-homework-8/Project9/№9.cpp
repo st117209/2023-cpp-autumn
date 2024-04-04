@@ -33,7 +33,7 @@ public:
 	int roadsCount();
 	int vertexCount();
 	int power(int vertex);
-	bool isTour(); 
+	bool isTour();
 	void inputAdjencyList();
 	void outputAdjencyList();
 
@@ -75,10 +75,10 @@ int main(int argc, char* argv[])
 
 
 CGraph::CGraph()
-	: _vertexes(0), _edges(0), _matrix(nullptr), _edge(nullptr), _color(nullptr) {}
+	: _vertexes(0), _edges(0), _matrix(nullptr), _edge(nullptr) {}
 
 CGraph::CGraph(int vertexes, int edges)
-	: _vertexes(vertexes), _edges(edges), _matrix(nullptr), _color(nullptr), _edge(nullptr)
+	: _vertexes(vertexes), _edges(edges), _matrix(nullptr), _edge(nullptr)
 {
 	init();
 }
@@ -86,6 +86,22 @@ CGraph::CGraph(int vertexes, int edges)
 CGraph::~CGraph()
 {
 	dispose();
+}
+
+void CGraph::inputAdjencyList()
+{
+	for (int i = 0; i < vertexCount(); ++i)
+	{
+		int n = 0;
+		std::cin >> n;
+		while (n != 0)
+		{
+			int end = 0;
+			std::cin >> end;
+			_matrix[i][end - 1] = 1;
+			--n;
+		}
+	}
 }
 
 void CGraph::PrintMatrix()
@@ -99,9 +115,9 @@ void CGraph::PrintMatrix()
 		}
 		initMatrixFromEdges();
 	}
-	for (int i = 1; i < _vertexes; ++i)
+	for (int i = 0; i < _vertexes; ++i)
 	{
-		for (int j = 1; j < _vertexes; ++j)
+		for (int j = 0; j < _vertexes; ++j)
 		{
 			std::cout << _matrix[i][j] << " ";
 		}
@@ -186,38 +202,6 @@ int CGraph::power(int vertex)
 		r += (_matrix[vertex][i] != 0);
 	}
 	return r;
-}
-
-bool CGraph::isTour()
-{
-	for (int i = 0; i < vertexCount(); ++i)
-	{
-		int c = 0;
-		for (int j = 0; j < vertexCount(); ++j)
-		{
-			if (_matrix[i][j] + _matrix[j][i] == 2)
-			{
-				return false;
-			}
-			/*
-			0 1 0 0
-			0 0 1 1
-			1 0 0 0
-			1 0 1 0
-			*/
-			/*
-			5 | 3  = 7      0b101 | 0b011 = 0b111
-			5 || 3 = true    true |  true = true
-
-			*/
-			c += (_matrix[i][j] | _matrix[j][i]);
-		}
-		if (c != vertexCount() - 1)
-		{
-			return false;
-		}
-	}
-	return true;
 }
 
 void CGraph::init()
@@ -337,43 +321,4 @@ std::ostream& operator<<(std::ostream& stream, const SEdge& edge)
 		stream << " " << edge.w;
 	}
 	return stream;
-}
-
-void CGraph::outputAdjencyList()
-{
-
-	std::cout << vertexCount() - 1 << std::endl;
-	for (int i = 1; i < vertexCount(); ++i)
-	{
-		int count = 0;
-		for (int j = 0; j < vertexCount(); ++j)
-		{
-			count += _matrix[i][j];
-		}
-		std::cout << count << " ";
-		for (int j = 0; j < vertexCount(); ++j)
-		{
-			if (_matrix[i][j] == 1)
-			{
-				std::cout << j << " ";
-			}
-		}
-		std::cout << std::endl;
-	}
-}
-
-void CGraph::inputAdjencyList()
-{
-	for (int i = 0; i < vertexCount(); ++i)
-	{
-		int n = 0;
-		std::cin >> n;
-		while (n != 0)
-		{
-			int end = 0;
-			std::cin >> end;
-			_matrix[i][end - 1] = 1;
-			--n;
-		}
-	}
 }

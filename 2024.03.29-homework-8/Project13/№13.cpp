@@ -34,9 +34,7 @@ public:
 	int vertexCount();
 	int power(int vertex);
 	bool isTour();
-	void printOrigins();
-	void printDrain();
-
+	bool isFull();
 
 private:
 	///создает матрицу смежности n*n и матрицу с дугами размера m
@@ -67,18 +65,20 @@ int main(int argc, char* argv[])
 {
 	int v = 0;
 	std::cin >> v;
-	CGraph g(v, 0);
-	g.ReadMatrix(v, std::cin);
-
+	int e = 0;
+	std::cin >> e;
+	CGraph g(v, e);
+	g.ReadEdges(e, std::cin);
+	std::cout << (g.isFull() ? "YES" : "NO") << std::endl;
 	return EXIT_SUCCESS;
 }
 
 
 CGraph::CGraph()
-	: _vertexes(0), _edges(0), _matrix(nullptr), _edge(nullptr), _color(nullptr) {}
+	: _vertexes(0), _edges(0), _matrix(nullptr), _edge(nullptr) {}
 
 CGraph::CGraph(int vertexes, int edges)
-	: _vertexes(vertexes), _edges(edges), _matrix(nullptr), _color(nullptr), _edge(nullptr)
+	: _vertexes(vertexes), _edges(edges), _matrix(nullptr), _edge(nullptr)
 {
 	init();
 }
@@ -99,9 +99,9 @@ void CGraph::PrintMatrix()
 		}
 		initMatrixFromEdges();
 	}
-	for (int i = 1; i < _vertexes; ++i)
+	for (int i = 0; i < _vertexes; ++i)
 	{
-		for (int j = 1; j < _vertexes; ++j)
+		for (int j = 0; j < _vertexes; ++j)
 		{
 			std::cout << _matrix[i][j] << " ";
 		}
@@ -339,51 +339,17 @@ std::ostream& operator<<(std::ostream& stream, const SEdge& edge)
 	return stream;
 }
 
-void CGraph::printOrigins()
+bool CGraph::isFull()
 {
-	bool origin[101]{ 0 };
-	int count = 0;
-	for (int i = 0; i < (vertexCount()); ++i)
+	for (int i = 1; i < (vertexCount() - 1); ++i)
 	{
-		origin[i] = true;
-		for (int j = 0; j < (vertexCount()); ++j)
+		for (int j = i + 1; j < (vertexCount() - 1); ++j)
 		{
-			origin[i] &= _matrix[j][i] == 0;
-		}
-		count += (int)origin[i];
-	}
-	std::cout << count << " ";
-	for (int i = 0; i < (vertexCount()); ++i)
-	{
-		if (origin[i])
-		{
-			std::cout << i + 1 << " ";
+			if (_matrix[i][j] + _matrix[j][i] == 0)
+			{
+				return false;
+			}
 		}
 	}
-	std::cout << std::endl;
+	return true;
 }
-
-void CGraph::printDrain()
-{
-	bool origin[101]{ 0 };
-	int count = 0;
-	for (int i = 0; i < (vertexCount()); ++i)
-	{
-		origin[i] = true;
-		for (int j = 0; j < (vertexCount()); ++j)
-		{
-			origin[i] &= _matrix[i][j] == 0;
-		}
-		count += (int)origin[i];
-	}
-	std::cout << count << " ";
-	for (int i = 0; i < (vertexCount()); ++i)
-	{
-		if (origin[i])
-		{
-			std::cout << i + 1 << " ";
-		}
-	}
-	std::cout << std::endl;
-}
-

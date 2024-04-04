@@ -34,9 +34,8 @@ public:
 	int vertexCount();
 	int power(int vertex);
 	bool isTour();
-	void printOrigins();
-	void printDrain();
-
+	void MathTree();
+	void Readev(std::istream& stream);
 
 private:
 	///создает матрицу смежности n*n и матрицу с дугами размера m
@@ -55,30 +54,29 @@ private:
 	void disposeMatrix();
 	///удаляет матрицу с дугами
 	void disposeEdges();
+	void disposeev();
 
 	int _vertexes;
 	int _edges;
 	int** _matrix;
-	int* _color;
+	int* _evmat;
 	SEdge* _edge;
 };
 
 int main(int argc, char* argv[])
 {
-	int v = 0;
-	std::cin >> v;
-	CGraph g(v, 0);
-	g.ReadMatrix(v, std::cin);
-
+	CGraph g(3, 0);
+	g.Readev(std::cin);
+	g.MathTree();
 	return EXIT_SUCCESS;
 }
 
 
 CGraph::CGraph()
-	: _vertexes(0), _edges(0), _matrix(nullptr), _edge(nullptr), _color(nullptr) {}
+	: _vertexes(0), _edges(0), _matrix(nullptr), _edge(nullptr) {}
 
 CGraph::CGraph(int vertexes, int edges)
-	: _vertexes(vertexes), _edges(edges), _matrix(nullptr), _color(nullptr), _edge(nullptr)
+	: _vertexes(vertexes), _edges(edges), _matrix(nullptr), _edge(nullptr)
 {
 	init();
 }
@@ -99,9 +97,9 @@ void CGraph::PrintMatrix()
 		}
 		initMatrixFromEdges();
 	}
-	for (int i = 1; i < _vertexes; ++i)
+	for (int i = 0; i < _vertexes; ++i)
 	{
-		for (int j = 1; j < _vertexes; ++j)
+		for (int j = 0; j < _vertexes; ++j)
 		{
 			std::cout << _matrix[i][j] << " ";
 		}
@@ -188,38 +186,6 @@ int CGraph::power(int vertex)
 	return r;
 }
 
-bool CGraph::isTour()
-{
-	for (int i = 0; i < vertexCount(); ++i)
-	{
-		int c = 0;
-		for (int j = 0; j < vertexCount(); ++j)
-		{
-			if (_matrix[i][j] + _matrix[j][i] == 2)
-			{
-				return false;
-			}
-			/*
-			0 1 0 0
-			0 0 1 1
-			1 0 0 0
-			1 0 1 0
-			*/
-			/*
-			5 | 3  = 7      0b101 | 0b011 = 0b111
-			5 || 3 = true    true |  true = true
-
-			*/
-			c += (_matrix[i][j] | _matrix[j][i]);
-		}
-		if (c != vertexCount() - 1)
-		{
-			return false;
-		}
-	}
-	return true;
-}
-
 void CGraph::init()
 {
 	dispose();
@@ -301,6 +267,15 @@ void CGraph::disposeEdges()
 	}
 }
 
+void CGraph::disposeev()
+{
+	if (_evmat != nullptr)
+	{
+		delete[] _evmat;
+		_evmat = nullptr;
+	}
+}
+
 void CGraph::initEdgesFromMatrix()
 {
 	disposeEdges();
@@ -339,51 +314,27 @@ std::ostream& operator<<(std::ostream& stream, const SEdge& edge)
 	return stream;
 }
 
-void CGraph::printOrigins()
+void CGraph::Readev(std::istream& stream)
 {
-	bool origin[101]{ 0 };
-	int count = 0;
-	for (int i = 0; i < (vertexCount()); ++i)
+	_evmat = new int[3];
+	for (int i = 0; i < 3; ++i)
 	{
-		origin[i] = true;
-		for (int j = 0; j < (vertexCount()); ++j)
-		{
-			origin[i] &= _matrix[j][i] == 0;
-		}
-		count += (int)origin[i];
+		stream >> _evmat[i];
 	}
-	std::cout << count << " ";
-	for (int i = 0; i < (vertexCount()); ++i)
-	{
-		if (origin[i])
-		{
-			std::cout << i + 1 << " ";
-		}
-	}
-	std::cout << std::endl;
+
 }
 
-void CGraph::printDrain()
+void CGraph::MathTree()
 {
-	bool origin[101]{ 0 };
-	int count = 0;
-	for (int i = 0; i < (vertexCount()); ++i)
-	{
-		origin[i] = true;
-		for (int j = 0; j < (vertexCount()); ++j)
-		{
-			origin[i] &= _matrix[i][j] == 0;
+	while (_evmat[1] != _evmat[2]) {
+		if (_evmat[1] > _evmat[2]) {
+			_evmat[1] /= 2;
 		}
-		count += (int)origin[i];
-	}
-	std::cout << count << " ";
-	for (int i = 0; i < (vertexCount()); ++i)
-	{
-		if (origin[i])
-		{
-			std::cout << i + 1 << " ";
+		else {
+			_evmat[2] /= 2;
 		}
 	}
-	std::cout << std::endl;
-}
 
+	std::cout << _evmat[1];
+	disposeev();
+}
