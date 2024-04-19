@@ -37,6 +37,11 @@ public:
 	void printOrigins();
 	void printDrain();
 
+	void Read(int v, std::istream& stream);
+	void initLed();
+	void disopseLed();
+	void Tsk16(int a1, int b1);
+
 
 private:
 	///создает матрицу смежности n*n и матрицу с дугами размера m
@@ -61,14 +66,19 @@ private:
 	int** _matrix;
 	int* _color;
 	SEdge* _edge;
+	int* _led;
 };
 
 int main(int argc, char* argv[])
 {
 	int v = 0;
 	std::cin >> v;
+	int a1;
+	int b1;
+	std::cin >> a1 >> b1;
 	CGraph g(v, 0);
-	g.ReadMatrix(v, std::cin);
+	g.Read(v, std::cin);
+	g.Tsk16(a1, b1);
 
 	return EXIT_SUCCESS;
 }
@@ -387,3 +397,88 @@ void CGraph::printDrain()
 	std::cout << std::endl;
 }
 
+
+void CGraph::Read(int v, std::istream& stream)
+{
+	_vertexes = v;
+	initLed();
+	for (int j = 1; j < _vertexes; ++j)
+	{
+		stream >> _led[j];
+	}
+
+}
+
+void CGraph::initLed()
+{
+	if (_vertexes == 0)
+	{
+		return;
+	}
+	_led = new int [_vertexes] {0};
+}
+
+void CGraph::Tsk16(int a1, int b1)
+{
+	int a = a1;
+	int b = b1;
+
+	int suma = 1;
+	int sumb = 1;
+
+	while (a != 1 || b != 1)
+	{
+		if (a != 1)
+		{
+			a = _led[a - 1];
+			suma++;
+		}
+		if (b != 1)
+		{
+			b = _led[b - 1];
+			sumb++;
+		}
+	}
+
+	if (sumb > suma)
+	{
+		a = b1;
+		b = a1;
+		a1 = a;
+		b1 = b;
+	}
+
+	a = a1;
+	b = b1;
+
+	while (a != b)
+	{
+		while (a != 1 && a != b)
+		{
+			a = _led[a - 1];
+		}
+		if (a == 1)
+		{
+			a = a1;
+		}
+		if (b == 1)
+		{
+			a = 1;
+		}
+		if (a == b)
+		{
+			break;
+		}
+		b = _led[b - 1];
+	}
+
+	disopseLed();
+
+	std::cout << a;
+}
+
+void CGraph::disopseLed()
+{
+	delete[] _led;
+	_led = nullptr;
+}
