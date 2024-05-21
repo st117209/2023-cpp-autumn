@@ -14,7 +14,7 @@ public:
     Calculator();
 
 private slots:
-    void digitClicked();				//
+    void digitClicked();				// ввод цифры
     void unary_operation_Clicked();		// унарные операции
     void binary_operation_Clicked();	// бинарные операции
     void equalCliked();					// вывод значения
@@ -29,7 +29,7 @@ private:
 
     Button* createButton(const QString& text, const char* member); // функция для создания кнопок (чтоб быстрее было) member - куда нужно подключиться
 
-    void abortOperation();
+    void abortOperation();  // выдать ошибку
 
     QLineEdit* m_display_up;    // врхний экран
     QLineEdit* m_display_down;  // нижний экран
@@ -50,7 +50,7 @@ private:
     QString m_change_sign       = QChar(0x000000b1) ;
 
 
-    bool calculate(double operand, const QString& operation); // функция для подсчета
+    bool calculate(double operand, const QString& operation);  // функция для подсчета
 
 };
 

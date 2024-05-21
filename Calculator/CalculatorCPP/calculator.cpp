@@ -4,11 +4,11 @@
 
 #include <QtMath>
 
-#include<QDebug>
+#include <QDebug>
 
 #include "button.h"
 
-#include<QWidget>
+#include <QWidget>
 
 
 Calculator::Calculator()
@@ -20,43 +20,38 @@ Calculator::Calculator()
 
     setLayout(mainLayout); // добавляем в слой
 
-    mainLayout->setSizeConstraint(QLayout::SetFixedSize); // устанавливаем фиксированный размер
+    mainLayout->setSizeConstraint(QLayout::SetFixedSize); // устанавливаем фиксированный размер столбцов и строк
 
+    // невозможность ввода с клавиатуры
     m_display_up->setReadOnly(true);
     m_display_down->setReadOnly(true);
 
+    // выравнивание текста справа
     m_display_up->setAlignment(Qt::AlignRight);
     m_display_down->setAlignment(Qt::AlignRight);
+    m_sign->setAlignment(Qt::AlignRight);
 
     // ограничение длинны ввода текста
     m_display_up->setMaxLength(20);
     m_display_down->setMaxLength(20);
 
 
-    //увеличиваем шрифт
+    // увеличиваем шрифт
     QFont font = m_display_up->font();  //запрашиваем настройки шрифта
     font.setPointSize(font.pointSize() + 10); //меняем шрифт
     m_display_up->setFont(font);
     m_display_down->setFont(font);
+    m_sign->setFont(font);
 
 
-/*
-    //создаём кнопки
-    Button* But1 = new Button("1");
-
-    connect(But1, SIGNAL(clicked()), this, SLOT(But1())); // подключение кнопки
-
-    mainLayout->addWidget(But1, 3, 0, 6, 1);
-*/
-
-
-    for (int i = 0; i < 9; i++)
+    // создаём кнопки
+    for (int i = 0; i < 10; i++)
     {
         m_digitButtons[i] = createButton (QString::number(i), SLOT(digitClicked()));
     }
 
-    Button* pointButton         = createButton(".", SLOT(backClicked()));
-    Button* changeSignButton    = createButton(m_change_sign,SLOT(signChangeClicked()));
+    Button* pointButton         = createButton(".", SLOT(pointClicked()));
+    Button* changeSignButton    = createButton(m_change_sign, SLOT(signChangeClicked()));
     Button* backButton          = createButton("<-", SLOT(backClicked()));
     Button* clearButton         = createButton("C", SLOT(clearClicked()));
     Button* clearAllButton      = createButton("AC", SLOT(allClearClicked()));
@@ -68,23 +63,24 @@ Calculator::Calculator()
     Button* powerButton         = createButton(m_power_sign, SLOT(unary_operation_Clicked()));
     Button* reciprocalButton    = createButton(m_reciprocal_sign, SLOT(unary_operation_Clicked()));
     Button* equalButton         = createButton("=", SLOT(equalCliked()));
+    /*
+    Button* clearMemoryButton   = createButton("MC", SLOT(clearMemoryClicked()));
+    Button* readMemoryButton    = createButton("MR", SLOT(readMemoryClicked()));
+    Button* setMemoryButton     = createButton("M+", SLOT(setMemoryClicked()));
+    Button* addToMemoryButton   = createButton("M-", SLOT(addToMemoryClicked()));
+    */
 
+    // добавляем виджеты
+    mainLayout->addWidget(m_display_up,     0, 0, 1, 6);
+    mainLayout->addWidget(m_sign,           1, 5, 1, 1);
+    mainLayout->addWidget(m_display_down,   2, 0, 1, 6);
 
-    mainLayout->addWidget(m_display_up,   0, 0, 1, 6);
-    mainLayout->addWidget(m_sign,     1, 5, 1, 1);
-    mainLayout->addWidget(m_display_down,  2, 0, 1, 6);
     mainLayout->addWidget(backButton,       3, 0, 1, 2);
     mainLayout->addWidget(clearButton,      3, 2, 1, 2);
     mainLayout->addWidget(clearAllButton,   3, 4, 1, 2);
-    /*
-    mainLayout->addWidget();
-    mainLayout->addWidget();
-    mainLayout->addWidget();
-    mainLayout->addWidget();
-    mainLayout->addWidget();
-    */
-    // ?
-    for(int i = 1; i < 10; i++)
+
+    // быстрое создание цифр 1 - 9
+    for(int i = 0; i < 10; i++)
     {
         int row = ((9 - i) / 3) + 4;
         int column = ((i - 1) % 3) + 1;
@@ -106,15 +102,10 @@ Calculator::Calculator()
     mainLayout->addWidget(equalButton,          7, 5);
 
 
-
-    //добавляем виджеты
-    mainLayout->addWidget(m_display_up, 0, 0, 6, 1);
-    mainLayout->addWidget(m_sign, 1, 5, 1, 1);
-    mainLayout->addWidget(m_display_down, 2, 0, 6, 1);
-
     setWindowTitle("Calculator"); // добавляем заголовок окна программы
 }
 
+// для упрощенного создания кнопок
 Button* Calculator::createButton(const QString& text, const char* member)
 {
     Button* btn = new Button(text);
@@ -124,10 +115,19 @@ Button* Calculator::createButton(const QString& text, const char* member)
 
 void Calculator::digitClicked()
 {
-    Button* btn = (Button* )sender();
+    Button* btn = (Button* )sender();  // возвращает указатель на объект, который вызвал данный слот
     int digit = btn->text().toUInt();
-    qDebug() << "degit" << digit;
+    // qDebug() << "digit" << digit;
+
+    if(m_display_down->text() == "0")
+    {
+        m_display_down->clear();
+        m_display_up->clear();
+    }
+
+    m_display_down->setText(m_display_down->text() + QString::number(digit));
 }
+
 
 void Calculator::unary_operation_Clicked()
 {
@@ -176,7 +176,7 @@ void Calculator::binary_operation_Clicked()
 
     m_sign->setText(operation);
 
-    if (m_display_down->text() == "0")
+    if (m_display_down->text() == "")
     {
         return;
     }
@@ -198,7 +198,6 @@ void Calculator::binary_operation_Clicked()
     }
 
     m_pending_operation = operation;
-
 }
 void Calculator::equalCliked()
 {
@@ -261,27 +260,8 @@ void Calculator::allClearClicked()
 {
     m_display_down->setText("0");
     m_display_up->clear();
+    m_sign->clear();
 }
-
-/*
-void Calculator::clearMemoryClicked()
-{
-
-}
-void Calculator::readMemoryClicked()
-{
-
-}
-void Calculator::plusMemoryClicked()
-{
-
-}
-void Calculator::minusMemoryClicked()
-{
-
-}
-
-*/
 
 void Calculator::abortOperation()
 {
@@ -291,7 +271,7 @@ void Calculator::abortOperation()
 
 bool Calculator::calculate(double operand, const QString& operation) //получилось посчитать или нет
 {
-    double temp_total = m_display_up->text().toDouble();
+    double temp_total   = m_display_up->text().toDouble();
 
     if (operation == m_plus_sign)
     {
@@ -319,4 +299,3 @@ bool Calculator::calculate(double operand, const QString& operation) //полу�
     return true;
 
 }
-
